@@ -15,6 +15,8 @@ import (
 )
 
 func main() {
+	log.Println("🚀 App Started!")
+
 	fullQuote, err := quote.Load()
 	if err != nil {
 		log.Fatal(err)
