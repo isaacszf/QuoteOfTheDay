@@ -1,9 +1,11 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
 	"os"
+
 	"time"
 
 	"quoteoftheday.isaacszf.net/app/quote"
@@ -22,9 +24,12 @@ func main() {
 	quote := fmt.Sprintf(`"%s" - %s %s`, fullQuote.Phrase, fullQuote.Author, emoji)
 
 	// Scheduler
+	schedulerTime := flag.String("time", "00:00", "Scheduler Time")
+	flag.Parse()
+
 	scheduler := gocron.NewScheduler(time.UTC)
 
-	scheduler.Every(1).Day().At("03:00").Do(func() {
+	scheduler.Every(1).Day().At(*schedulerTime).Do(func() {
 		status := handleTweet(quote)
 		log.Println(status)
 	})
