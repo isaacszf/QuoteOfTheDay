@@ -20,7 +20,7 @@ func getPageByUrlAndParse(url string) (*goquery.Document, error) {
 	}
 	defer res.Body.Close()
 
-	if res.StatusCode != 200 {
+	if res.StatusCode != 200 && res.StatusCode != 403 {
 		body, err := ioutil.ReadAll(res.Body)
 		if err != nil {
 			return nil, err
