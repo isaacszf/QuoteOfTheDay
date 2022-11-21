@@ -24,7 +24,7 @@ func main() {
 	// Scheduler
 	scheduler := gocron.NewScheduler(time.UTC)
 
-	scheduler.Every(1).Day().At("16:30").Do(func() {
+	scheduler.Every(1).Day().At("03:00").Do(func() {
 		status := handleTweet(quote)
 		log.Println(status)
 	})
