@@ -17,21 +17,21 @@ import (
 func main() {
 	log.Println("🚀 App Started!")
 
-	fullQuote, err := quote.Load()
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	emoji := getRandomEmoji()
-	quote := fmt.Sprintf(`"%s" - %s %s`, fullQuote.Phrase, fullQuote.Author, emoji)
-
 	// Scheduler
-	schedulerTime := flag.String("time", "12:00", "Scheduler Time")
+	schedulerTime := flag.String("time", "05:30", "Scheduler Time")
 	flag.Parse()
 
 	scheduler := gocron.NewScheduler(time.UTC)
 
 	scheduler.Every(1).Day().At(*schedulerTime).Do(func() {
+		fullQuote, err := quote.Load()
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		emoji := getRandomEmoji()
+		quote := fmt.Sprintf(`"%s" - %s %s`, fullQuote.Phrase, fullQuote.Author, emoji)
+
 		status := handleTweet(quote)
 		log.Println(status)
 	})
