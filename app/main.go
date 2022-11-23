@@ -26,7 +26,7 @@ func main() {
 	quote := fmt.Sprintf(`"%s" - %s %s`, fullQuote.Phrase, fullQuote.Author, emoji)
 
 	// Scheduler
-	schedulerTime := flag.String("time", "03:00", "Scheduler Time")
+	schedulerTime := flag.String("time", "12:00", "Scheduler Time")
 	flag.Parse()
 
 	scheduler := gocron.NewScheduler(time.UTC)
