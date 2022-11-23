@@ -18,7 +18,7 @@ func main() {
 	log.Println("🚀 App Started!")
 
 	// Scheduler
-	schedulerTime := flag.String("time", "05:30", "Scheduler Time")
+	schedulerTime := flag.String("time", "03:00", "Scheduler Time")
 	flag.Parse()
 
 	scheduler := gocron.NewScheduler(time.UTC)
