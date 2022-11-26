@@ -18,14 +18,6 @@ import (
 func main() {
 	log.Println("🚀 App Started!")
 
-	// For render
-	mux := http.NewServeMux()
-	mux.HandleFunc("/health_check", func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusOK)
-		w.Write([]byte("App is running!"))
-	})
-	http.ListenAndServe(":10000", mux)
-
 	// Scheduler
 	schedulerTime := flag.String("time", loadEnvKey("SCHEDULER_TIME"), "Scheduler Time")
 	flag.Parse()
@@ -47,7 +39,16 @@ func main() {
 		log.Println(status)
 	})
 
-	scheduler.StartBlocking()
+	scheduler.StartAsync()
+
+	// For render
+	mux := http.NewServeMux()
+	mux.HandleFunc("/health_check", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("App is running!"))
+	})
+
+	http.ListenAndServe(":10000", mux)
 }
 
 func handleTweet(text string) string {
