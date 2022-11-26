@@ -3,7 +3,6 @@ package quote
 import (
 	"errors"
 	"fmt"
-	"io/ioutil"
 	"net/http"
 	"strings"
 
@@ -25,14 +24,9 @@ func getPageByUrlAndParse(url string) (*goquery.Document, error) {
 	}
 	defer res.Body.Close()
 
-	if res.StatusCode != 200 && res.StatusCode != 403 {
-		body, err := ioutil.ReadAll(res.Body)
-		if err != nil {
-			return nil, err
-		}
-
+	if res.StatusCode != 200 {
 		t := fmt.Sprintf(
-			"Status Code error: %d | Body: %s", res.StatusCode, string(body))
+			"Status Code error: %d | Status: %s", res.StatusCode, res.Status)
 		return nil, errors.New(t)
 	}
 
