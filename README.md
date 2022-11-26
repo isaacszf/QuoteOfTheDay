@@ -24,4 +24,4 @@ Packages that were used for this project:
 - **[godotenv](https://github.com/joho/godotenv)**
 - **[gotwitter-v2](https://github.com/g8rswimmer/go-twitter) & [oauth1](https://github.com/dghubble/oauth1)**
 
-To keep the bot always online, [Railway](https://railway.app/) was used. 
+To keep the bot always online, [Render](https://render.com/) was used. 
