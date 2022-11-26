@@ -4,7 +4,8 @@ import (
 	"flag"
 	"fmt"
 	"log"
-	"os"
+    "net/http"
+    "os"
 
 	"time"
 
@@ -15,8 +16,15 @@ import (
 )
 
 func main() {
-	log.Println("🚀 App Started!")
+    log.Println("🚀 App Started!")
 
+    // For render
+    mux := http.NewServeMux()
+    mux.HandleFunc("/", func (w http.ResponseWriter, r *http.Request) {
+        w.WriteHeader(http.StatusOK)
+        w.Write([]byte("App is running!"))
+    })
+    
 	// Scheduler
 	schedulerTime := flag.String("time", loadEnvKey("SCHEDULER_TIME"), "Scheduler Time")
 	flag.Parse()
@@ -37,6 +45,7 @@ func main() {
 	})
 
 	scheduler.StartBlocking()
+    http.ListenAndServe(":8080", mux)
 }
 
 func handleTweet(text string) string {
