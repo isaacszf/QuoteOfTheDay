@@ -20,7 +20,7 @@ func main() {
 
 	// For render
 	mux := http.NewServeMux()
-	mux.HandleFunc("/heath_check", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/health_check", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte("App is running!"))
 	})
