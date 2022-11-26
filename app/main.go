@@ -24,7 +24,7 @@ func main() {
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte("App is running!"))
 	})
-	defer http.ListenAndServe(":10000", mux)
+	http.ListenAndServe(":10000", mux)
 
 	// Scheduler
 	schedulerTime := flag.String("time", loadEnvKey("SCHEDULER_TIME"), "Scheduler Time")
