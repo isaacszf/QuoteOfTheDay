@@ -12,8 +12,7 @@ After that, run:
 ```bash
 go build -o out ./app/.
 
-# "-time" indicates to the scheduler what time the tweet will be sent (default is "03:00")
-./out -time "00:00"
+./out
 ```
 
 ## Technologies
