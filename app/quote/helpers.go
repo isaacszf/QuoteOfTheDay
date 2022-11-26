@@ -3,8 +3,8 @@ package quote
 import (
 	"errors"
 	"fmt"
-    "log"
-    "net/http"
+	"io"
+	"net/http"
 	"strings"
 
 	"github.com/PuerkitoBio/goquery"
@@ -16,24 +16,24 @@ func getPageByUrlAndParse(url string) (*goquery.Document, error) {
 		return nil, err
 	}
 
-    req.Header.Add("Accept", `application/json, text/javascript, */*; q=0.01`)
-    req.Header.Add("User-Agent", `Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36 Edg/107.0.1418.56`)
-    req.Header.Add("Content-Type", `application/json`)
+	req.Header.Add("Accept", `application/json, text/javascript, */*; q=0.01`)
+	req.Header.Add("User-Agent", `Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36 Edg/107.0.1418.56`)
+	req.Header.Add("Content-Type", `application/json`)
 
-    res, err := http.DefaultClient.Do(req)
+	res, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return nil, err
 	}
 	defer res.Body.Close()
 
-    if res.StatusCode == 403 {
-        log.Println("🔁 403 ST | Trying Again...")
-        return getPageByUrlAndParse(url)
-    }
+	if res.StatusCode != 200 {
+		body, err := io.ReadAll(res.Body)
+		if err != nil {
+			return nil, err
+		}
 
-    if res.StatusCode != 200 {
 		t := fmt.Sprintf(
-			"Status Code error: %d | Status: %s", res.StatusCode, res.Status)
+			"Status Code error: %d | Body: %s", res.StatusCode, body)
 		return nil, errors.New(t)
 	}
 
