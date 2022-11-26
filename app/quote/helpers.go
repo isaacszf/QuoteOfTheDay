@@ -11,21 +11,16 @@ import (
 )
 
 func getPageByUrlAndParse(url string) (*goquery.Document, error) {
-    client := &http.Client{
-        CheckRedirect: func(req *http.Request, via []*http.Request) error {
-            return http.ErrUseLastResponse
-        },
-    }
-
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	req.Header.Add("Accept", `text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8`)
-	req.Header.Add("User-Agent", `Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_5) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11`)
+    req.Header.Add("Accept", `application/json, text/javascript, */*; q=0.01`)
+    req.Header.Add("User-Agent", `Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36 Edg/107.0.1418.56`)
+    req.Header.Add("Content-Type", `application/json`)
 
-    res, err := client.Do(req)
+    res, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return nil, err
 	}
