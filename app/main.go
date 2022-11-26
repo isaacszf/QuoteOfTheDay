@@ -24,13 +24,14 @@ func main() {
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte("App is running!"))
 	})
-	http.ListenAndServe(":10000", mux)
 
 	// Scheduler
 	schedulerTime := flag.String("time", loadEnvKey("SCHEDULER_TIME"), "Scheduler Time")
 	flag.Parse()
 
 	scheduler := gocron.NewScheduler(time.UTC)
+
+	log.Println("📅 Scheduler Created..")
 
 	scheduler.Every(1).Day().At(*schedulerTime).Do(func() {
 		fullQuote, err := quote.Load()
@@ -46,6 +47,7 @@ func main() {
 	})
 
 	scheduler.StartBlocking()
+	http.ListenAndServe(":10000", mux)
 }
 
 func handleTweet(text string) string {
