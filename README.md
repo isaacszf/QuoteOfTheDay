@@ -12,7 +12,8 @@ After that, run:
 ```bash
 go build -o out ./app/.
 
-./out
+# --time is optional
+./out --time 03:00
 ```
 
 ## Technologies
