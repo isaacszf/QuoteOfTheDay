@@ -24,6 +24,7 @@ func main() {
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte("App is running!"))
 	})
+	defer http.ListenAndServe(":10000", mux)
 
 	// Scheduler
 	schedulerTime := flag.String("time", loadEnvKey("SCHEDULER_TIME"), "Scheduler Time")
@@ -47,7 +48,6 @@ func main() {
 	})
 
 	scheduler.StartBlocking()
-	http.ListenAndServe(":10000", mux)
 }
 
 func handleTweet(text string) string {
