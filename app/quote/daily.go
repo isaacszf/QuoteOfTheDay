@@ -1,7 +1,7 @@
 package quote
 
 var (
-	url = "https://www.brainyquote.com/quote_of_the_day/"
+	url = "https://www.brainyquote.com/quote_of_the_day"
 )
 
 type Quote struct {
