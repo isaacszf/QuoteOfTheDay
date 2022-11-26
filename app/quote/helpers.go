@@ -3,7 +3,8 @@ package quote
 import (
 	"errors"
 	"fmt"
-	"net/http"
+    "log"
+    "net/http"
 	"strings"
 
 	"github.com/PuerkitoBio/goquery"
@@ -29,6 +30,11 @@ func getPageByUrlAndParse(url string) (*goquery.Document, error) {
 			"Status Code error: %d | Status: %s", res.StatusCode, res.Status)
 		return nil, errors.New(t)
 	}
+
+    if res.StatusCode == 403 {
+        log.Println("🔁 403 ST | Trying Again...")
+        return getPageByUrlAndParse(url)
+    }
 
 	document, err := goquery.NewDocumentFromReader(res.Body)
 	if err != nil {
