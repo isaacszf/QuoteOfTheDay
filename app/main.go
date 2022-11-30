@@ -6,7 +6,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-
 	"time"
 
 	"quoteoftheday.isaacszf.net/app/quote"
@@ -16,17 +15,17 @@ import (
 )
 
 func main() {
-	log.Println("🚀 App Started!")
+	log.Print("🚀 App Started!")
 
 	// Scheduler
-	schedulerTime := flag.String("time", loadEnvKey("SCHEDULER_TIME"), "Scheduler Time")
+	schedulerTime := flag.String("time", "03:00", "Scheduler Time")
 	flag.Parse()
 
 	scheduler := gocron.NewScheduler(time.UTC)
 
-	log.Println("📅 Scheduler Created..")
-
 	scheduler.Every(1).Day().At(*schedulerTime).Do(func() {
+		log.Println("⚠️  Scheduler Called..")
+
 		fullQuote, err := quote.Load()
 		if err != nil {
 			log.Fatal(err)
@@ -36,19 +35,22 @@ func main() {
 		quote := fmt.Sprintf(`"%s" - %s %s`, fullQuote.Phrase, fullQuote.Author, emoji)
 
 		status := handleTweet(quote)
-		log.Println(status)
+		log.Print(status + "\n\n")
 	})
 
 	scheduler.StartAsync()
 
-	// For render
+	// For Render
 	mux := http.NewServeMux()
 	mux.HandleFunc("/health_check", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte("App is running!"))
 	})
 
-	http.ListenAndServe(":10000", mux)
+	log.Print("⭐ Render Server starting at http://localhost:10000/health_check\n\n")
+
+	err := http.ListenAndServe(":10000", mux)
+	log.Fatal(err)
 }
 
 func handleTweet(text string) string {
