@@ -24,13 +24,6 @@ func main() {
 		w.Write([]byte("App is running!"))
 	})
 
-	go func() {
-		log.Print("⭐ Render Server starting at http://localhost:10000/health_check\n\n")
-
-		err := http.ListenAndServe(":10000", mux)
-		log.Fatal(err)
-	}()
-
 	// Scheduler
 	schedulerTime := flag.String("time", "03:00", "Scheduler Time")
 	flag.Parse()
@@ -52,8 +45,18 @@ func main() {
 		log.Print(status + "\n\n")
 	})
 
-	scheduler.StartBlocking()
+	go func() {
+		for {
+			log.Print("⭐ Render Server starting at http://localhost:10000/health_check\n\n")
 
+			err := http.ListenAndServe(":10000", mux)
+			log.Fatal(err)
+		}
+	}()
+
+	for {
+		scheduler.StartBlocking()
+	}
 }
 
 func handleTweet(text string) string {
