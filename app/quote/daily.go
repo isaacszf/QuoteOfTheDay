@@ -10,7 +10,12 @@ type Quote struct {
 }
 
 func Load() (*Quote, error) {
-	document, err := getPageByUrlAndParse(url)
+	request, err := makeRequest(url)
+	if err != nil {
+		return nil, err
+	}
+
+	document, err := getPageByUrlAndParse(request, url)
 	if err != nil {
 		return nil, err
 	}
