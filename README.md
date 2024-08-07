@@ -12,8 +12,12 @@ After that, run:
 ```bash
 go build -o out ./app/.
 
-# --time is optional
-./out --time 03:00
+# --schedule and --time is optional
+./out --schedule --time 03:00 # this will schedule the tweet daily
+
+# or 
+
+./out # this will tweet instantly
 ```
 
 ## Technologies
@@ -24,5 +28,3 @@ Packages that were used for this project:
 - **[goquery](https://github.com/PuerkitoBio/goquery)**
 - **[godotenv](https://github.com/joho/godotenv)**
 - **[gotwitter-v2](https://github.com/g8rswimmer/go-twitter) & [oauth1](https://github.com/dghubble/oauth1)**
-
-To keep the bot always online, [Railway](https://railway.app/) was used. 

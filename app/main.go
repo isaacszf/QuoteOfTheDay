@@ -17,27 +17,38 @@ func main() {
 	log.Print("🚀 App Started!\n\n")
 
 	// Scheduler
+	schedule := flag.Bool("schedule", false, "Schedule Post")
+
 	defaultTime := loadEnvKey("SCHEDULER_TIME")
 	schedulerTime := flag.String("time", defaultTime, "Scheduler Time")
 
 	flag.Parse()
 
-	scheduler := gocron.NewScheduler(time.UTC)
+	if *schedule {
+		scheduler := gocron.NewScheduler(time.UTC)
 
-	scheduler.Every(1).Day().At(*schedulerTime).Do(func() {
-		fullQuote, err := quote.Load()
-		if err != nil {
+		scheduler.Every(1).Day().At(*schedulerTime).Do(func() {
+			sendTweet()
+		})
+
+		scheduler.StartBlocking()
+	} else {
+		sendTweet()
+		os.Exit(1);
+	}
+}
+
+func sendTweet() {
+	fullQuote, err := quote.Load()
+	if err != nil {
 			log.Fatal(err)
-		}
+	}
 
-		emoji := getRandomEmoji()
-		quote := fmt.Sprintf(`"%s" - %s %s`, fullQuote.Phrase, fullQuote.Author, emoji)
+	emoji := getRandomEmoji()
+	quote := fmt.Sprintf(`"%s" - %s %s`, fullQuote.Phrase, fullQuote.Author, emoji)
 
-		status := handleTweet(quote)
-		log.Print(status)
-	})
-
-	scheduler.StartBlocking()
+	status := handleTweet(quote)
+	log.Print(status)
 }
 
 func handleTweet(text string) string {
