@@ -1,6 +1,6 @@
 # QuoteOfTheDay
 
-[@SomeDaiIyQuotes](https://twitter.com/SomeDaiIyQuotes) is a simple Twitter bot that tweets quotes from famous authors daily. This is mainly done using a
+[@SomeDaiIyQuotes](https://twitter.com/SomeDaiIyQuotes) is a simple X bot that tweets quotes from famous authors daily. This is mainly done using a
 web scrapper on the website [BrainyQuote](https://www.brainyquote.com/quote_of_the_day) and then parsing it so that the quote can be tweeted.
 
 ## Running
